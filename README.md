@@ -1,3 +1,9 @@
+# Participants
+
+LOUIS Robin
+BOURSIN Paul
+PALMISANO Quentin
+
 # Touché Coulé
 
 Welcome to the DAAR project. The idea will be to implement a "Touché Coulé" (Battleship) game
