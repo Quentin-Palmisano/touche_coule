@@ -7,21 +7,22 @@ import './Main.sol';
 
 contract MyShip3 is Ship {
 
-    address public shipId;
+    address private rand;
+    uint private cpt = 0;
     uint private x;
     uint private y;
     uint private board_width;
     uint private board_height;
 
-    constructor() {
-        shipId = msg.sender;
+    constructor(address _rand) {
+        rand = _rand;
         x = 1;
         y = 1;
 
     }
 
-    function random(uint _number) public view returns(uint) {
-        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, msg.sender))) % _number;
+    function random(uint _number) public returns(uint) {
+        return uint(keccak256(abi.encodePacked(block.timestamp, block.difficulty, rand, cpt++))) % _number;
     }
 
     function update(uint _x, uint _y) public virtual override {
@@ -30,15 +31,15 @@ contract MyShip3 is Ship {
     }
 
     function fire() public virtual override returns (uint, uint) {
-        // uint a;
-        // uint b;
-        // bool invalid = true;
-        // while(invalid) {
-        //     a = random(board_width);
-        //     b = random(board_height);
-        //     if (a != x) invalid = false;
-        // }
-        return (x, y);
+        uint a;
+        uint b;
+        bool invalid = true;
+        while(invalid) {
+            a = random(board_width);
+            b = random(board_height);
+            if (a != x) invalid = false;
+        }
+        return (a, b);
     }
 
     function place(uint _width, uint _height) public virtual override returns (uint, uint) {
