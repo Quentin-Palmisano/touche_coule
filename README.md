@@ -1,8 +1,8 @@
 # Participants
 
--LOUIS Robin
--BOURSIN Paul
--PALMISANO Quentin
+- LOUIS Robin
+- BOURSIN Paul
+- PALMISANO Quentin
 
 # Touché Coulé
 
