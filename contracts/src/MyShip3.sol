@@ -4,21 +4,27 @@ pragma solidity ^0.8;
 import "./Ship.sol";
 import 'hardhat/console.sol';
 import './Main.sol';
+import "./MyShip4.sol";
 
 contract MyShip3 is Ship {
 
+    // Variables utilisées pour la génération aléatoire d'entiers
     address private rand;
     uint private cpt = 0;
+    // Position du bateau
     uint private x;
     uint private y;
+    // Taille du board
     uint private board_width;
     uint private board_height;
+    // Position du bateau allié
+    uint private fx;
+    uint private fy;
 
     constructor(address _rand) {
         rand = _rand;
         x = 1;
         y = 1;
-
     }
 
     function random(uint _number) public returns(uint) {
@@ -27,7 +33,7 @@ contract MyShip3 is Ship {
 
     function update(uint _x, uint _y) public virtual override {
         x = _x;
-        x = _y;
+        y = _y;
     }
 
     function fire() public virtual override returns (uint, uint) {
@@ -37,7 +43,7 @@ contract MyShip3 is Ship {
         while(invalid) {
             a = random(board_width);
             b = random(board_height);
-            if (a != x) invalid = false;
+            if ((a != x || b != y) && (a != fx || b != fy)) invalid = false;
         }
         return (a, b);
     }
@@ -47,10 +53,17 @@ contract MyShip3 is Ship {
         board_height = _height;
         x = random(_width);
         y = random(_height);
-        return(x, y);
+        return (x, y);
     }
 
-    function register(address _main, address _ship) external {
-        Main(_main).register(_ship);
+    // Fonctions permettant de communiquer avec le bateau allié et récupérersa position 
+    function getPos(address _ship) external {
+        (uint a, uint b) = MyShip4(_ship).givePos();
+        fx = a;
+        fy = b;
+    }
+
+    function givePos() external view returns (uint, uint) {
+        return (x, y);
     }
 }
